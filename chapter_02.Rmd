@@ -1,0 +1,219 @@
+---
+title: "ISLR"
+output: html_notebook
+autor: René Brinkhuis
+---
+
+# EXERCISE 8:
+
+## 8a
+```{r}
+require(ISLR)
+data(College)
+str(College)
+```
+
+## 8b
+```{r}
+fix(College)
+```
+
+```{r}
+# convert index to column
+df <- cbind(rownames(College), data.frame(College, row.names=NULL))
+colnames(df)[1] <- "Name"
+
+fix(df)
+```
+
+```{r}
+# convert column to index
+rownames(df) <- df[,1]
+df <- df[,-1]
+
+fix(df)
+```
+
+## 8c-i
+```{r}
+summary(College)
+```
+
+## 8c-ii
+```{r}
+pairs(College[,1:10])
+```
+
+## 8c-iii
+```{r}
+boxplot(Outstate~Private, data=College, xlab="Private", ylab="Outstate")
+```
+
+## 8c-iv
+```{r}
+Elite <- rep("No", nrow(College))
+Elite[College$Top10perc>50] <- "Yes"
+Elite <- as.factor(Elite)
+College <- data.frame(College, Elite)
+
+summary(College)
+```
+
+```{r}
+boxplot(Outstate~Elite, data=College, xlab="Elite", ylab="Outstate")
+```
+
+## 8c-v
+```{r}
+par(mfrow=c(2,2))
+hist(College$Apps, breaks=10, main="Apps")
+hist(College$Enroll, breaks=20, main="Enroll")
+hist(College$Expend, breaks=30, main="Expend")
+hist(College$Outstate, breaks=40, main="Outstate")
+```
+
+# EXERCISE 9:
+
+## 9a
+```{r}
+require(ISLR)
+data(Auto)
+str(Auto)
+```
+
+```{r}
+Auto$origin <- as.factor(Auto$origin)
+```
+
+```{r}
+# Quantitative predictors
+quantitative_predictors = unlist(lapply(Auto, is.numeric))
+print(colnames(Auto[, quantitative_predictors]))
+```
+
+```{r}
+# Qualitative predictors
+qualitative_predictors = unlist(lapply(Auto, is.factor))
+print(colnames(Auto[, qualitative_predictors]))
+```
+
+## 9b
+```{r}
+range(Auto$mpg)
+range(Auto$cylinders)
+range(Auto$displacement)
+range(Auto$horsepower)
+range(Auto$weight)
+range(Auto$acceleration)
+range(Auto$year)
+```
+
+## 9c
+```{r}
+sapply(Auto[,1:7], mean)
+sapply(Auto[,1:7], sd)
+```
+
+## 9d
+```{r}
+Auto1085 <- Auto[,-(8:9)] # quantitative predictors only
+Auto1085 <- Auto1085[-(10:85),] # remove rows
+sapply(Auto1085, range)
+sapply(Auto1085, mean)
+sapply(Auto1085, sd)
+```
+
+## 9e
+```{r}
+pairs(Auto[,1:7])
+```
+
+## 9f
+```{r}
+cor(Auto$mpg, Auto$cylinders)
+cor(Auto$mpg, Auto$displacement)
+cor(Auto$mpg, Auto$horsepower)
+cor(Auto$mpg, Auto$weight)
+cor(Auto$mpg, Auto$acceleration)
+cor(Auto$mpg, Auto$year)
+```
+
+# EXERCISE 10:
+
+## 10a
+```{r}
+require(ISLR)
+require(MASS)
+data(Boston)
+str(Boston)
+```
+
+```{r}
+?Boston
+```
+
+## 10b
+```{r}
+pairs(Boston)
+```
+
+## 10c
+```{r}
+require(ggplot2)
+require(reshape2)
+
+bosmelt <- melt(Boston, id="crim")
+ggplot(bosmelt, aes(x=value, y=crim)) +
+  facet_wrap(~variable, scales="free") + 
+  geom_point()
+```
+
+```{r}
+corrmatrix <- cor(Boston, use="complete.obs")[1,]
+corrmatrix[corrmatrix > 0.5 | corrmatrix < -0.5][-1]
+```
+
+## 10d
+```{r}
+require(ggplot2)
+n = nrow(Boston)
+```
+
+```{r}
+ggplot(Boston, aes(x=1:n, y=crim)) + geom_point()
+```
+
+```{r}
+ggplot(Boston, aes(x=1:n, y=tax)) + geom_point()
+```
+
+```{r}
+ggplot(Boston, aes(x=1:n, y=ptratio)) + geom_point()
+```
+
+## 10e
+```{r}
+table(Boston$chas)
+```
+
+## 10f
+```{r}
+median(Boston$ptratio)
+```
+
+## 10g
+```{r}
+Boston[Boston$medv == min(Boston$medv),]
+```
+```{r}
+sapply(Boston, quantile)
+```
+
+## 10h
+```{r}
+nrow(Boston[Boston$rm > 7,])
+```
+
+```{r}
+nrow(Boston[Boston$rm > 8,])
+```
