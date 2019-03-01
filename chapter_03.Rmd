@@ -1,0 +1,99 @@
+---
+title: "ISLR"
+output: html_notebook
+autor: René Brinkhuis
+---
+
+# EXERCISE 8:
+```{r}
+require(ISLR)
+data(Auto)
+```
+
+## 8a
+```{r}
+fit.lm <- lm(mpg ~ horsepower, data=Auto)
+summary(fit.lm)
+```
+
+> [i] Yes, there is a relationship between predictor and response (since the F-statistic `599.7` is far larger than 1)  
+
+> [ii] There is relationship is strong between predictor ans response (since the p-value `< 2.2e-16` is close to 0)  
+
+> [iii] The relationship is negative (since the coefficient `-0.157845` is negative)  
+
+> [iv] See below.  
+
+```{r}
+hp98 <- data.frame(horsepower = 98)
+predict(fit.lm, hp98)  # predicted mpg
+```
+
+```{r}
+predict(fit.lm, hp98, interval = "confidence")  # conf interval
+```
+
+```{r}
+predict(fit.lm, hp98, interval = "prediction")  # pred interval
+```
+
+## 8b
+```{r}
+plot(Auto$horsepower, Auto$mpg)
+abline(fit.lm, col="red")
+```
+
+## 8c
+```{r}
+par(mfrow=c(2,2))
+plot(fit.lm)
+```
+
+# EXERCISE 9:
+
+## 9a
+```{r}
+require(ISLR)
+data(Auto)
+pairs(Auto)
+```
+
+## 9b
+```{r}
+cor(subset(Auto, select=-name))
+```
+
+## 9c
+```{r}
+fit.lm <- lm(mpg~.-name, data=Auto)
+summary(fit.lm)
+```
+
+## 9d
+```{r}
+par(mfrow=c(2,2))
+plot(fit.lm)
+```
+
+
+# EXERCISE 10:
+
+## 10a
+```{r}
+require(ISLR)
+data(Carseats)
+write.csv(Carseats,'data/carseats.csv')
+fit.lm_10a <- lm(Sales ~ Price + Urban + US, data=Carseats)
+summary(fit.lm_10a)
+```
+
+## 10e
+```{r}
+fit.lm_10e <- lm(Sales ~ Price + US, data=Carseats)
+summary(fit.lm_10e)
+```
+
+## 10g
+```{r}
+confint(fit.lm_10e)
+```
