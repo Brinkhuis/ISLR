@@ -97,3 +97,29 @@ summary(fit.lm_10e)
 ```{r}
 confint(fit.lm_10e)
 ```
+
+# EXERCISE 11:
+
+## 11a
+```{r}
+set.seed(1)
+x <- rnorm(100)
+y <- 2*x + rnorm(100)
+```
+
+```{r}
+# write data for use with Python
+write.csv(data.frame(x, y), "data/ch03_ex11.csv", row.names=FALSE)
+```
+
+```{r}
+model_a <- lm(y ~ x + 0)
+summary(model_a)
+```
+
+## 11b
+```{r}
+model_b <- lm(x ~ y + 0)
+summary(model_b)
+```
+
