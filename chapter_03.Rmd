@@ -8,6 +8,7 @@ autor: René Brinkhuis
 ```{r}
 require(ISLR)
 data(Auto)
+write.csv(Auto, 'data/auto.csv') # for use with Python
 ```
 
 ## 8a
@@ -76,13 +77,33 @@ plot(fit.lm)
 ```
 
 
+```{r}
+# try 3 predictor transformations
+fit.lm4 <- lm(mpg~poly(displacement,3)+weight+year+origin, data=Auto)
+fit.lm5 <- lm(mpg~displacement+I(log(weight))+year+origin, data=Auto)
+fit.lm6 <- lm(mpg~displacement+I(weight^2)+year+origin, data=Auto)
+summary(fit.lm4)
+summary(fit.lm5)
+summary(fit.lm6)
+```
+```
+
+
 # EXERCISE 10:
+
+```{r}
+require(ISLR)
+data(Carseats)
+fit.lm_10a <- lm(Sales ~ Price + Urban + US, data=Carseats)
+summary(fit.lm_10a)
+```
+```
+
 
 ## 10a
 ```{r}
 require(ISLR)
 data(Carseats)
-write.csv(Carseats,'data/carseats.csv')
 fit.lm_10a <- lm(Sales ~ Price + Urban + US, data=Carseats)
 summary(fit.lm_10a)
 ```
@@ -121,5 +142,80 @@ summary(model_a)
 ```{r}
 model_b <- lm(x ~ y + 0)
 summary(model_b)
+```
+
+# EXERCISE 13:
+
+## 13a
+```{r}
+x <- rnorm(100, mean=0, sd=1)
+```
+
+## 13b
+```{r}
+eps <- rnorm(100, mean=0, sd=0.25)
+```
+
+## 13c
+```{r}
+y <- -1 + 0.5*x + eps
+```
+
+## 13d
+```{r}
+plot(x, y)
+```
+
+## 13e
+```{r}
+model_e <- lm(y ~ x)
+summary(model_e)
+```
+
+## 13f
+```{r}
+plot(x, y)
+abline(-1, 0.5, col="blue", lwd=2)
+abline(model_e, col="red", lwd=2)
+legend(-3, 0.5, legend=c("population", "fitted model"),  col=c("blue","red"), lwd=2)
+```
+
+## 13g
+```{r}
+model_g <- lm(y ~ x + I(x^2))
+summary(model_g)
+anova(model_e, model_g)
+```
+
+## 13h
+```{r}
+x <- rnorm(100, mean=0, sd=1)
+eps <- rnorm(100, mean=0, sd=0.1)
+y <- -1 + 0.5*x + eps
+model_h <- lm(y ~ x)
+summary(model_h)
+```
+
+```{r}
+plot(x, y)
+abline(-1, 0.5, col="blue", lwd=2)
+abline(model_h, col="red", lwd=2)
+legend(-2.5, 0.9, legend=c("population", "fitted model"),  col=c("blue","red"), lwd=2)
+```
+
+## 13i
+```{r}
+x <- rnorm(100, mean=0, sd=1)
+eps <- rnorm(100, mean=0, sd=0.5)
+y <- -1 + 0.5*x + eps
+model_i <- lm(y ~ x)
+summary(model_i)
+```
+
+```{r}
+plot(x, y)
+abline(-1, 0.5, col="blue", lwd=2)
+abline(model_i, col="red", lwd=2)
+legend(-2.5, 0.85, legend=c("population", "fitted model"),  col=c("blue","red"), lwd=2)
 ```
 
